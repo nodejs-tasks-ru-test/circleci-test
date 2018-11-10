@@ -11,9 +11,6 @@ const GITHUB_HEADERS = {
   'User-Agent': 'learn.javascript.ru',
 };
 
-console.log(process.env);
-return;
-
 if (!process.env.CIRCLECI)
   throw new Error('run_tests_ci can be run only on CI');
 
@@ -29,11 +26,12 @@ function sleep(ms) {
 }
 
 async function retrievePRInfo() {
-  const repo_slug = process.env.CIRCLE_PROJECT_REPONAME;
+  const owner = process.env.CIRCLE_PROJECT_USERNAME;
+  const repo_name = process.env.CIRCLE_PROJECT_REPONAME;
   const number = process.env.CIRCLE_PR_NUMBER;
 
   const response = await request({
-    uri: `${GITHUB_BASE}/repos/${repo_slug}/pulls/${number}`,
+    uri: `${GITHUB_BASE}/repos/${owner}/${repo_name}/pulls/${number}`,
     headers: GITHUB_HEADERS,
     method: 'GET'
   });

@@ -22,3 +22,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: npm test
+
+notify:
+  webhooks:
+    - url: https://47fb6a13.ngrok.io/taskbook/circleci/notifications

@@ -11,18 +11,26 @@ const GITHUB_HEADERS = {
   'User-Agent': 'learn.javascript.ru',
 };
 
-if (!process.env.CI)
+console.log(process.env);
+return;
+
+if (!process.env.CIRCLECI)
   throw new Error('run_tests_ci can be run only on CI');
 
-if (process.env.TRAVIS_EVENT_TYPE !== 'pull_request') return;
+if (!process.env.CIRCLE_PR_NUMBER) {
+  console.log({
+    skip: true,
+  });
+  process.exit(0);
+}
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function retrievePRInfo() {
-  const repo_slug = process.env.TRAVIS_REPO_SLUG;
-  const number = process.env.TRAVIS_PULL_REQUEST;
+  const repo_slug = process.env.CIRCLE_PROJECT_REPONAME;
+  const number = process.env.CIRCLE_PR_NUMBER;
 
   const response = await request({
     uri: `${GITHUB_BASE}/repos/${repo_slug}/pulls/${number}`,

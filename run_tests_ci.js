@@ -4,6 +4,7 @@ const request = require('request-promise').defaults({
   json: true
 });
 const run_tests = require('./run_tests');
+const fs = require('fs');
 
 const GITHUB_BASE = 'https://api.github.com';
 const GITHUB_HEADERS = {
@@ -15,9 +16,7 @@ if (!process.env.CIRCLECI)
   throw new Error('run_tests_ci can be run only on CI');
 
 if (!process.env.CIRCLE_PR_NUMBER) {
-  console.log({
-    skip: true,
-  });
+  fs.writeFileSync('results/result.json', JSON.stringify({skip: true,}));
   process.exit(0);
 }
 

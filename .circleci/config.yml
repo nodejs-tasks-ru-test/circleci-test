@@ -23,6 +23,10 @@ jobs:
 
       - run: npm test
 
+      - store_artifacts:
+          path: results/result.json
+
+
 notify:
   webhooks:
     - url: https://47fb6a13.ngrok.io/taskbook/circleci/notifications

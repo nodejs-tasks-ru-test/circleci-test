@@ -1,9 +1,10 @@
 const Mocha = require('mocha');
 const glob = require('glob');
+const fs = require('fs');
 
 module.exports = function runTests(moduleName, taskName, options) {
   if (!moduleName) {
-    console.error(JSON.stringify({
+    fs.writeFileSync('results/result.json', JSON.stringify({
       format_error: true,
       message: 'Required parameter `moduleName` is missing. Example: `npm test 0-module 1-task`'
     }));
@@ -11,7 +12,7 @@ module.exports = function runTests(moduleName, taskName, options) {
   }
 
   if (!taskName) {
-    console.error(JSON.stringify({
+    fs.writeFileSync('results/result.json', JSON.stringify({
       format_error: true,
       message: 'Required parameter `taskName` is missing. Example: `npm test 0-module 1-task`'
     }));
@@ -21,7 +22,7 @@ module.exports = function runTests(moduleName, taskName, options) {
   const tests = glob.sync(`${moduleName}/${taskName}/test/**/**.test.js`);
 
   if (tests.length === 0) {
-    console.error(JSON.stringify({
+    fs.writeFileSync('results/result.json', JSON.stringify({
       format_error: true,
       message: `There are no test files in ${moduleName}/${taskName}. Please check module and task.`
     }));
